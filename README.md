@@ -31,23 +31,23 @@ Todos os eventos importantes são registrados em um arquivo de log (/var/log/syn
 
 APP: Define o nome da aplicação que será incluída na URL da API. MODE: Define o modo de sincronização (ex: redirect). IPv4: Endereço IPv4 do servidor alvo. IPv6: Endereço IPv6 do servidor alvo (opcional). EMAIL_ENABLED: Ativa ou desativa o envio de notificações de erro por e-mail (true ou false). EMAIL_RECIPIENT: Endereço de e-mail que receberá as notificações de erro. DEBUG: Ativa ou desativa o modo de debug em tempo real (true ou false).
 
-Como Utilizar:
+## Como Utilizar:
 
-Pré-requisitos:
+### Pré-requisitos:
 O script deve ser executado em um ambiente onde os comandos curl, unbound-checkconf, e unbound-control estejam disponíveis. Certifique-se de que o script tenha permissão para escrever no arquivo de configuração (/etc/unbound/block.d/dns-block.conf) e nos logs (/var/log/synAnablock.log).
 
-Execução:
+### Execução:
 Para executar o script, simplesmente execute o arquivo em um terminal de linha de comando:
 ./nome_do_script.sh
 Se o modo DEBUG estiver ativado, informações detalhadas serão exibidas diretamente no console.
 
-Monitoramento e Logs:
+### Monitoramento e Logs:
 Verifique o arquivo de log (/var/log/synAnablock.log) para informações detalhadas sobre a execução. O log registrará todos os eventos importantes, incluindo a validação de acesso, o download da lista de domínios, a atualização do arquivo de configuração e quaisquer erros encontrados.
 
-Notificação por E-mail:
+### Notificação por E-mail:
 Se configurado, o script enviará um e-mail para o endereço especificado em caso de erro, detalhando o problema ocorrido.
 
-Exemplo de Configuração:
+### Exemplo de Configuração:
 Aqui está um exemplo de como configurar o script com as variáveis apropriadas:
 
 APP="unbound"
@@ -60,27 +60,27 @@ DEBUG=true
 
 Neste exemplo, o modo de depuração está ativado (DEBUG=true), o que permitirá que todas as informações sejam exibidas no console, e as notificações de erro por e-mail serão enviadas para admin@dominio.com.
 
-Possíveis Erros e Soluções:
+## Possíveis Erros e Soluções:
 
-Acesso Negado:
+### Acesso Negado:
 Se a API de ACL retornar "ACCESS-DENIED", o script interromperá a execução. Verifique se o IP do servidor está devidamente autorizado. Entrar em contato: https://anablock.net.br/
 
-Falha no Download:
+### Falha no Download:
 Se o arquivo de configuração não puder ser baixado ou estiver vazio, o script gerará um log com detalhes e interromperá a execução.
 
-Erro na Configuração do Unbound:
+### Erro na Configuração do Unbound:
 Caso a verificação da configuração do Unbound falhe, será gerado um log com detalhes, e o Unbound não será recarregado até que o problema seja resolvido.
 
-Permissão de Execução:
+### Permissão de Execução:
 chmod +x /caminho/completo/para/o/script.sh
 
-Passos para Agendamento com crontab:
+## Passos para Agendamento com crontab:
 
-Abra o arquivo de configuração do crontab:
+### Abra o arquivo de configuração do crontab:
 No terminal, digite o seguinte comando:
 crontab -e
 
-Adicione a seguinte linha ao crontab:
+### Adicione a seguinte linha ao crontab:
 Esta linha agendará a execução do script todos os dias às 3h da manhã:
 0 3 * * * /caminho/completo/para/o/script.sh >> /var/log/synAnablock_cron.log 2>&1
 
@@ -96,12 +96,12 @@ Explicação:
 
 /var/log/synAnablock_cron.log 2>&1: Este comando redireciona a saída (logs) do script para o arquivo /var/log/synAnablock_cron.log, registrando tanto a saída padrão quanto erros. Isso ajuda no monitoramento e solução de problemas.
 
-Exemplo Completo:
+## Exemplo Completo:
 
 Se o seu script estiver localizado em /etc/unbound/scripts/syncronizacao.sh, a entrada no crontab seria:
 
 0 3 * * * /etc/unbound/scripts/syncronizacao.sh >> /var/log/synAnablock_cron.log 2>&1
 
-Monitoramento:
+## Monitoramento:
 
 Você pode verificar o arquivo /var/log/synAnablock_cron.log para conferir os logs de execução automática do script via cron.
