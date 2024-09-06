@@ -1,33 +1,33 @@
-Script de Sincronização e Validação de Acesso
+# Script de Sincronização e Validação de Acesso
 
-Objetivo:
+## Objetivo:
 
 Este script foi desenvolvido para realizar a sincronização de listas de domínios com o servidor Unbound a partir de uma API externa. Além disso, ele realiza uma validação de acesso antes de prosseguir com a sincronização, garantindo que a execução só ocorra quando o IP do servidor tiver permissão.
 
-Funcionalidades:
+## Funcionalidades:
 
-Validação de Acesso:
+### Validação de Acesso:
 Antes de realizar o download da lista de domínios, o script faz uma validação de acesso consultando a API ACL (https://anablock.net.br/acl.php). O retorno da API indica se o IP do servidor tem permissão de acesso. Se o retorno for ACCESS-DENIED, o script gera um log detalhado e interrompe a execução. O conteúdo completo da resposta da API é registrado no log quando o modo de debug está ativado.
 
-Download de Lista de Domínios:
+### Download de Lista de Domínios:
 Se o acesso for permitido, o script faz o download da lista de domínios da URL fornecida (https://api.anablock.net.br/api/domains/all?) e salva o conteúdo em um arquivo de configuração (/etc/unbound/local.d/dns-block.conf). O script também constrói dinamicamente a URL com base nos parâmetros como APP, MODE, IPv4, e IPv6.
 
-Backup e Atualização:
+### Backup e Atualização:
 Antes de remover o arquivo de configuração antigo, o script cria um backup do arquivo (/etc/unbound/local.d/dns-block.conf.bak). Após o download, o arquivo de configuração é atualizado, e o backup é mantido como contingência.
 
-Validação da Configuração do Unbound:
+### Validação da Configuração do Unbound:
 O script usa o comando unbound-checkconf para verificar se a nova configuração não possui erros. Se houver erros, o script registra o problema nos logs e interrompe a execução.
 
-Recarregamento do Unbound:
+### Recarregamento do Unbound:
 Após uma configuração válida, o script recarrega o Unbound utilizando unbound-control reload, aplicando as novas configurações.
 
-Notificação de Erros por E-mail:
+### Notificação de Erros por E-mail:
 Se ocorrerem erros durante a execução, o script envia uma notificação por e-mail para um endereço configurado no próprio script. O envio de e-mail pode ser ativado ou desativado através da variável EMAIL_ENABLED.
 
-Logs Detalhados e Rotação de Logs:
+### Logs Detalhados e Rotação de Logs:
 Todos os eventos importantes são registrados em um arquivo de log (/var/log/synAnablock.log). O log é rotacionado automaticamente quando atinge 10MB, criando um arquivo antigo e um novo log para evitar problemas de armazenamento. Quando o modo DEBUG está ativado, o script exibe detalhes adicionais no console, como o conteúdo completo das respostas das APIs.
 
-Variáveis Configuráveis:
+## Variáveis Configuráveis:
 
 APP: Define o nome da aplicação que será incluída na URL da API. MODE: Define o modo de sincronização (ex: redirect). IPv4: Endereço IPv4 do servidor alvo. IPv6: Endereço IPv6 do servidor alvo (opcional). EMAIL_ENABLED: Ativa ou desativa o envio de notificações de erro por e-mail (true ou false). EMAIL_RECIPIENT: Endereço de e-mail que receberá as notificações de erro. DEBUG: Ativa ou desativa o modo de debug em tempo real (true ou false).
 
